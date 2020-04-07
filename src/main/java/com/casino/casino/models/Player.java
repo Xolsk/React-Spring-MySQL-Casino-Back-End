@@ -21,7 +21,7 @@ public class Player {
 	String password;
 	@OneToMany(mappedBy ="player")
 	Set<Roll> rolls;
-	int successRate;
+	double successRate;
 	
 	public Player() {}
 	
@@ -62,11 +62,11 @@ public class Player {
 		this.rolls = rolls;
 	}
 
-	public int getSuccessRate() {
+	public double getSuccessRate() {
 		return successRate;
 	}
 
-	public void setSuccessRate(int successRate) {
+	public void setSuccessRate(double successRate) {
 		this.successRate = successRate;
 	}
 

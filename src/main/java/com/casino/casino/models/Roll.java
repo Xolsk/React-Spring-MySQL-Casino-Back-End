@@ -38,7 +38,7 @@ public class Roll {
 		{
 			this.rollResults[i]=die.nextInt(6)+1;
 		}
-		this.wasSuccessful=this.checkSuccess();
+		this.wasSuccessful=checkSuccess();
 		
 	}
 	
@@ -48,7 +48,7 @@ public class Roll {
 		
 		for (int i=0; i<this.rollResults.length;i++)
 		{
-			if (this.rollResults[i]>4)
+			if (this.rollResults[i]>=2)
 			{
 				checkSuccess++;
 			}

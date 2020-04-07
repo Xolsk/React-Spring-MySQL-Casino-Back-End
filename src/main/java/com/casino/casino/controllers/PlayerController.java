@@ -62,18 +62,18 @@ public class PlayerController {
 	}
 
 	
-	@GetMapping("/players/ranking")
-	ResponseEntity<Response> getPlayerRanking (@PathVariable (value="playerID") String playerId){
+	@GetMapping("/ranking")
+	ResponseEntity<Response> getPlayerRanking (){
 		
 		List<Player> players = playerRepository.findAll();
-		Map<String,Integer> playerRanking = new HashMap<String,Integer>();
+		Map<String,Double> playerRanking = new HashMap<String,Double>();
 		String name;
-		Integer success;
+		Double success;
 		
 		for (Player player: players)
 		{	
 			name=player.getUsername();
-			success=new Integer(player.getSuccessRate());
+			success=new Double(player.getSuccessRate());
 			playerRanking.put(name, success);
 		}
 		
@@ -82,22 +82,24 @@ public class PlayerController {
 				
 	}
 	
-	@GetMapping("/players/ranking/worst")
-	ResponseEntity<Response> getWorstPlayer (@PathVariable (value="playerID") String playerId){
+	@GetMapping("/ranking/worst")
+	ResponseEntity<Response> getWorstPlayer (){
 		
 		List<Player>players = playerRepository.findAllByOrderBySuccessRateAsc();
+
 		Player worstPlayer = (Player) players.get(0);
 		Response allGood = new Response(worstPlayer,"Worst Player");
 		return ResponseEntity.ok().body(allGood);
 				
 	}
 	
-	@GetMapping("/players/ranking/best")
-	ResponseEntity<Response> getBestPlayer (@PathVariable (value="playerID") String playerId){
+	@GetMapping("/ranking/best")
+	ResponseEntity<Response> getBestPlayer (){
 		
 		List<Player> players = playerRepository.findAllByOrderBySuccessRateDesc();
+
 		Player bestPlayer = (Player) players.get(0);
-		Response allGood = new Response(bestPlayer,"Worst Player");
+		Response allGood = new Response(bestPlayer,"BestPlayer");
 		return ResponseEntity.ok().body(allGood);
 				
 	}
@@ -111,7 +113,7 @@ public class PlayerController {
 	
 	void setNewSuccessRate(Player player)
 	{
-		int successes=0;
+		double successes=0;
 		for (Roll roll :player.getRolls()) 
 		{
 			if (roll.getWasSuccessful()==true)
@@ -120,6 +122,7 @@ public class PlayerController {
 			}
 		}
 		player.setSuccessRate(successes/player.getRolls().size()*100);
+		playerRepository.save(player);
 	}
 	
 	void clearSuccessRate(Player player)
