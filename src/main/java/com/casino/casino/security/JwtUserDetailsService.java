@@ -26,7 +26,9 @@ public class JwtUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		
 		Player activePlayer = playerRepository.findByUsername(username);
+		
 		if (activePlayer == null) {
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
@@ -35,10 +37,24 @@ public class JwtUserDetailsService implements UserDetailsService {
 	}
 	
 	public Player save(Player player) {
+		
 		Player newPlayer= new Player();
+		
 		newPlayer.setUsername(player.getUsername());
 		newPlayer.setPassword(bcryptEncoder.encode(player.getPassword()));
 		playerRepository.save(newPlayer);
+		
 		return newPlayer;
+	}
+
+	public boolean checkforDuplicates(String username) {
+		
+		Player activePlayer=playerRepository.findByUsername(username);
+		
+		if (activePlayer==null)
+		{
+			return false;
+		}
+		return true;
 	}
 }

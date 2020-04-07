@@ -1,26 +1,43 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route,Switch } from "react-router-dom";
+import Home from "./components/Home";
+import PlayerUI from "./components/PlayerUI";
+
 import './App.css';
 
-function App() {
+class App extends React.Component{
+
+  constructor(props){
+    super(props)
+    this.state={loggedUser:false}
+    this.logUser = this.logUser.bind(this);
+  }
+
+  logUser=()=>{
+
+    this.setState({loggedUser:!this.state.loggedUser})
+
+  }
+
+    
+  render(){
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="welcome">
+      <h1>THE GRAN CASINO!</h1>
+      </div>
+      <Router>
+        <Switch>
+        <Route  path="/playerUI" render={(props)=><PlayerUI {...props} isLogged={this.state.loggedUser} logUser={this.logUser}/>}></Route>
+        <Route  exact path="/" render={(props)=><Home {...props} logUser={this.logUser}/>}></Route>
+        </Switch>
+      </Router>
+
     </div>
+    
+
   );
+  }
 }
 
 export default App;

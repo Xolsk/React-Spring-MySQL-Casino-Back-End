@@ -13,6 +13,10 @@ public class Response {
 		this.message=string;
 	}
 
+	public Response(String string) {
+		this.message=string;
+	}
+
 	public Object getObject() {
 		return object;
 	}

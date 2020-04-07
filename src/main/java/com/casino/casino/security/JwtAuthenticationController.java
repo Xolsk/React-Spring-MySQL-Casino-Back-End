@@ -60,8 +60,13 @@ public class JwtAuthenticationController {
 	@PostMapping("/register")
 	ResponseEntity<Response> createPlayer (@RequestBody @Valid Player player)
 	{
-        Player newPlayer=userDetailsService.save(player);
-        Response allGood =new Response(newPlayer,"Player added correctly");
+		Boolean isUserNameTaken=userDetailsService.checkforDuplicates(player.getUsername());
+		if (isUserNameTaken==false) {
+			userDetailsService.save(player);
+        Response allGood =new Response("Player added correctly.");
 		return ResponseEntity.ok().body(allGood);
+		}
+		Response badRequest = new Response("Player name alredy taken.");
+		return ResponseEntity.badRequest().body(badRequest);
 	}
 }
