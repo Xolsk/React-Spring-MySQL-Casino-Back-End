@@ -128,5 +128,6 @@ public class PlayerController {
 	void clearSuccessRate(Player player)
 	{
 		player.setSuccessRate(0);
+		playerRepository.save(player);
 	}
 }
