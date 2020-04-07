@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.casino.casino.helpers.Response;
+import com.casino.casino.helpers.UserNameChanger;
 import com.casino.casino.models.Player;
 import com.casino.casino.models.Roll;
 import com.casino.casino.repositories.PlayerRepository;
@@ -50,10 +51,10 @@ public class PlayerController {
 	
 
 	@PutMapping("/") 
-	ResponseEntity<Response>modifyPlayer(@RequestBody @Valid String username, String newuserName)
+	ResponseEntity<Response>modifyPlayer(@RequestBody @Valid UserNameChanger names)
 	{
-		Player activePlayer = playerRepository.findByUsername(username);
-		activePlayer.setUsername(newuserName);
+		Player activePlayer = playerRepository.findByUsername(names.getOldName());
+		activePlayer.setUsername(names.getNewName());
 		playerRepository.save(activePlayer);
 		Response allGood = new Response(activePlayer,"username modified");
 		
@@ -99,7 +100,7 @@ public class PlayerController {
 		List<Player> players = playerRepository.findAllByOrderBySuccessRateDesc();
 
 		Player bestPlayer = (Player) players.get(0);
-		Response allGood = new Response(bestPlayer,"BestPlayer");
+		Response allGood = new Response(bestPlayer,"Best Player");
 		return ResponseEntity.ok().body(allGood);
 				
 	}
